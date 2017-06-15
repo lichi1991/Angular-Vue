@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="jquery.js"></script>
+<script src="vue.js"></script>
+<style>
+    .sousuobox{
+        width: 300px;
+    }
+    .sousuo{
+        height: 40px;
+        width: 100%;
+    }
+    .sousuokuang{
+        width: 196px;
+        height: 36px;
+        border: 2px solid skyblue;
+        border-bottom-left-radius: 25px;
+        border-top-left-radius: 25px;
+        float: left;
+        outline: none;
+        padding: 0 15px;
+        font-size: 18px;
+    }
+    .sousuobtn{
+        display: inline-block;
+        width: 70px;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        border-bottom-right-radius: 25px;
+        border-top-right-radius: 25px;
+        background: skyblue;
+        float: left;
+        cursor: pointer;
+        color: #fff;
+    }
+    ul{
+        margin: 0;
+        margin-left: 15px;
+        width: 210px;
+        border: 2px solid skyblue;
+        border-top: none;
+        padding: 0;
+    }
+    li{
+        list-style: none;
+        line-height: 30px;
+        transition: all .5s;
+        box-sizing: border-box;
+        padding-left: 10px;
+    }
+    li:hover{
+        background: skyblue;
+    }
+</style>
+<body>
+<div class="box">
+    <lk-sousuo :list="arr1" title="搜索"></lk-sousuo>
+</div>
+</body>
+</html>
+<script>
+    // 搜索
+    Vue.component("lk-sousuo",{
+        props:["list","title"],
+        data(){
+            return {
+                hide:false,
+                val:""
+            }
+        },
+        template:`<div class="sousuobox">
+                    <div class="sousuo">
+                        <input type="text" v-model="val" @click="kai" class="sousuokuang">
+                        <span class="sousuobtn">{{title}}</span>
+                    </div>
+                    <lk-xiala :hide="hide" :list="list" @shows="set"></lk-xiala>
+                </div>`,
+        methods:{
+            kai(){
+                this.hide=!this.hide;
+            },
+            set(i){
+                this.val=i;
+                this.hide=false;
+            }
+        }
+    })
+    // ul>li
+    Vue.component("lk-xiala",{
+        props:['hide','list'],
+        template:`<ul v-show="hide">
+                        <li v-for="i in list" @click="show(i)">{{i}}</li>
+                  </ul>`,
+        methods:{
+            show(i){
+                this.$emit("shows",i);
+            }
+        }
+    })
+    var obj=new Vue({
+        el:".box",
+        data:{
+            arr1:['aa','bb','cc'],
+            arr2:['dd','ee','ff','gg']
+        }
+    })
+</script>
